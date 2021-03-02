@@ -1,5 +1,6 @@
-package com.myorg;
+package com.cloudprovisioner;
 
+import org.springframework.stereotype.Component;
 import software.amazon.awscdk.core.Construct;
 import software.amazon.awscdk.core.Duration;
 import software.amazon.awscdk.core.Stack;
@@ -15,15 +16,18 @@ public class AwsCloudProvisionerStack extends Stack {
 
     public AwsCloudProvisionerStack(final Construct parent, final String id, final StackProps props) {
         super(parent, id, props);
+        //topic.addSubscription(new SqsSubscription(queue));
+    }
 
-        final Queue queue = Queue.Builder.create(this, "AwsCloudProvisionerQueue")
+    public void provisionQueue(String id){
+        final Queue queue = Queue.Builder.create(this, id)
                 .visibilityTimeout(Duration.seconds(300))
                 .build();
+    }
 
-        final Topic topic = Topic.Builder.create(this, "AwsCloudProvisionerTopic")
-            .displayName("My First Topic Yeah")
-            .build();
-
-        topic.addSubscription(new SqsSubscription(queue));
+    public void provisionTopic(String id){
+        final Topic topic = Topic.Builder.create(this, id)
+                .displayName("Topic Name-"+id)
+                .build();
     }
 }
