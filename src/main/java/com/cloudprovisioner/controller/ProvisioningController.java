@@ -11,7 +11,10 @@ public class ProvisioningController {
     @RequestMapping(value = "/queue", params = { "id" }, method = RequestMethod.GET)
     String provisionQueue(@RequestParam("id")String id){
        if(StringUtils.isEmpty(id)){
-          return "please specify a valid id";
+          return "id cant be empty";
+       }
+       if (!id.matches("^[A-Za-z][A-Za-z0-9]{1,254}$")){
+           return "invalid queue id "+id;
        }
         App app = new App();
         AwsCloudProvisionerStack stack = new AwsCloudProvisionerStack(app, "AwsCloudProvisionerStack");
@@ -23,7 +26,10 @@ public class ProvisioningController {
     @RequestMapping(value = "/topic", params = { "id" }, method = RequestMethod.GET)
     String provisionTopic(@RequestParam("id")String id){
         if(StringUtils.isEmpty(id)){
-            return "please specify a valid id";
+            return "id cant be empty";
+        }
+        if (!id.matches("^[A-Za-z][A-Za-z0-9]{1,254}$")){
+            return "invalid queue id "+id;
         }
         App app = new App();
         AwsCloudProvisionerStack stack = new AwsCloudProvisionerStack(app, "AwsCloudProvisionerStack");
